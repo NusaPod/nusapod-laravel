@@ -17,6 +17,7 @@ RUN composer install --no-dev --optimize-autoloader \
 RUN mkdir -p /etc/nginx/conf.d
 
 RUN cat <<'EOF' > /etc/nginx/nginx.conf
+user  www-data;
 worker_processes  auto;
 error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
@@ -51,6 +52,9 @@ server {
     }
 }
 EOF
+
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 
