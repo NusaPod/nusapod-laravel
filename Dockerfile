@@ -14,8 +14,29 @@ RUN composer install --no-dev --optimize-autoloader \
     && mkdir -p /run/nginx
 
 # Nginx config
-RUN mkdir -p /etc/nginx/conf.d && \
-    cat <<'EOF' > /etc/nginx/conf.d/default.conf
+RUN mkdir -p /etc/nginx/conf.d
+
+RUN cat <<'EOF' > /etc/nginx/nginx.conf
+user  www-data;
+worker_processes  auto;
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+EOF
+
+RUN cat <<'EOF' > /etc/nginx/conf.d/default.conf
 server {
     listen 80;
     root /var/www/html/public;
