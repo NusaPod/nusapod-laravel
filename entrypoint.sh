@@ -2,7 +2,12 @@
 set -e
 
 # Buat struktur storage jika belum ada
-mkdir -p storage/{app/public,framework/{cache,sessions,views},logs}
+mkdir -p \
+  storage/app/public \
+  storage/framework/cache \
+  storage/framework/sessions \
+  storage/framework/views \
+  storage/logs
 
 # Pastikan izin benar
 chown -R www-data:www-data storage
