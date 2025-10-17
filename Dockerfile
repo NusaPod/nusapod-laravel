@@ -17,7 +17,6 @@ RUN composer install --no-dev --optimize-autoloader \
 RUN mkdir -p /etc/nginx/conf.d
 
 RUN cat <<'EOF' > /etc/nginx/nginx.conf
-user  www-data;
 worker_processes  auto;
 error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
